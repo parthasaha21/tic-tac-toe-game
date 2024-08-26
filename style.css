@@ -109,4 +109,7 @@ p{
         align-items: center;
         height: 50vh;
     }
+    .green {
+        color: green;
+    }
 }
