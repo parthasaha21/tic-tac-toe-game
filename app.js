@@ -28,6 +28,7 @@ box.forEach((box) => {
 
         if (turn0 === true) {
             box.innerText = "o";
+            box.classList.add("green"); // Change color to green for 'o'
             turn0 = false;
         } else {
             box.innerText = "x";
@@ -35,7 +36,7 @@ box.forEach((box) => {
         }
         box.disabled = true;
 
-        checkPatterns();
+        checkPatterns(); // Check if there's a winner or a draw
     });
 });
 
@@ -49,6 +50,7 @@ const enbBox = () => {
     box.forEach((b) => {
         b.disabled = false;
         b.innerText = "";
+        b.classList.remove("green"); // Reset the color when starting a new game
     });
 };
 
@@ -59,7 +61,16 @@ const showWinner = (winner) => {
     disbBox();
 };
 
+const showDraw = () => {
+    msgPara.innerText = "It's a draw!";
+    msg.classList.remove("hide");
+
+    disbBox();
+};
+
 const checkPatterns = () => {
+    let winnerFound = false;
+
     for (let patterns of winPatterns) {
         let pos1val = box[patterns[0]].innerText;
         let pos2val = box[patterns[1]].innerText;
@@ -69,7 +80,16 @@ const checkPatterns = () => {
             if (pos1val === pos2val && pos2val === pos3val) {
                 console.log("winner", pos1val);
                 showWinner(pos1val);
+                winnerFound = true;
+                break;
             }
+        }
+    }
+
+    if (!winnerFound) {
+        let allBoxesFilled = Array.from(box).every(b => b.innerText !== "");
+        if (allBoxesFilled) {
+            showDraw(); // Handle the draw case
         }
     }
 };
